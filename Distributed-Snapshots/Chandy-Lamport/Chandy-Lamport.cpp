@@ -276,7 +276,7 @@ int parseSnapShotChannelState(const char *channelState)
     return channelStateBalance;
 }
 
-void receiveMessageForCoordinator(int sockfd, int myID, int *totalAmountTransferred, bool *snapShotReceived, Time &start, FILE *fp, Graph *topology)
+void receiveMessageForCoordinator(int sockfd, int myID, int *totalAmountTransferred, int* sentMarkerMessagesCount, bool *snapShotReceived, Time &start, FILE *fp, Graph *topology)
 {
     struct sockaddr_in client;
     socklen_t len = sizeof(struct sockaddr_in);
@@ -288,7 +288,6 @@ void receiveMessageForCoordinator(int sockfd, int myID, int *totalAmountTransfer
     long long int sysTime;
     int numSnapshots = 0;
 
-    int sentMarkerMessagesCount = 0;
     int receivedMarkerMessagesCount = 0;
 
     while (true)
@@ -325,12 +324,12 @@ void receiveMessageForCoordinator(int sockfd, int myID, int *totalAmountTransfer
                     printf("\nMessage Complexity Collected from %d :: Sent Marker Messages : %d , Received Marker Messages : %d\n", message.senderId, message.snapshotMessage.sentMarkerMessagesCount, message.snapshotMessage.receivedMarkerMessagesCount);
                     fprintf(fp, "Coordinator receives message-complexity snapshot from %d %lld\n", message.senderId, sysTime);
                     numSnapshots++;
-                    sentMarkerMessagesCount += message.snapshotMessage.sentMarkerMessagesCount;
+                    *sentMarkerMessagesCount += message.snapshotMessage.sentMarkerMessagesCount;
                     receivedMarkerMessagesCount += message.snapshotMessage.receivedMarkerMessagesCount;
 
                     if (numSnapshots == topology->V - 1)
                     { // do not consider coordinator for snapshot
-                        printf("\n\n\n ------ \n\n\nEND SUCCESS :: Message Complexity :: Total Sent Marker Messages Count : %d , Total Received Marker Messages Count : %d\n\n\n ------ \n\n\n", sentMarkerMessagesCount, receivedMarkerMessagesCount);
+                        printf("\n\n\n ------ \n\n\nEND SUCCESS :: Message Complexity :: Total Sent Marker Messages Count : %d , Total Received Marker Messages Count : %d\n\n\n ------ \n\n\n", *sentMarkerMessagesCount, receivedMarkerMessagesCount);
                         sysTime = std::chrono::duration_cast<std::chrono::microseconds>(now - start).count();
                         fprintf(fp, "Coordinator receives all message-complexity snapshots %lld\n", sysTime);
                         broadcastMessageToNeighbors(myID, TERMINATE_MESSAGE, start, fp, topology);
@@ -353,14 +352,18 @@ void runCoordinator(int maxTransferredAmount, int sockfd, Time &start, FILE *fp,
     int *totalAmountTransferred = new int;
     *totalAmountTransferred = 0;
 
+    int *sentMarkerMessagesCount = new int;
+    *sentMarkerMessagesCount = 0;
+
     bool *snapShotReceived = new bool;
     *snapShotReceived = false;
 
-    auto threadRecv = thread(receiveMessageForCoordinator, sockfd, myID, totalAmountTransferred, snapShotReceived, ref(start), fp, topology);
+    auto threadRecv = thread(receiveMessageForCoordinator, sockfd, myID, totalAmountTransferred, sentMarkerMessagesCount, snapShotReceived, ref(start), fp, topology);
 
     while (true)
     {
         std::this_thread::sleep_for(std::chrono::seconds(2));
+        *sentMarkerMessagesCount += topology->neighbors[myID].size();
         if (broadcastMessageToNeighbors(myID, MARKER_MESSAGE, start, fp, topology) == false)
         {
             exit(1);
