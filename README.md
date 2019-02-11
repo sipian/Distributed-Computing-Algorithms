@@ -11,4 +11,4 @@ This project implements the following Distributed Computing Algorithms in C++.
   - Suzuki-Kasami’s Broadcast Algorithm
   
 ### References
-- <a href="../Reading-Material/Distributed-Computing-Principles-Algorithms-and-Systems-by-Ajay-Kshemkalyani-and-Mukesh-Singhal.pdf">Distributed Computing: Principles, Algorithms, and Systems by Ajay Kshemkalyani and Mukesh Singhal</a>
+- <a href="./Reading-Material/Distributed-Computing-Principles-Algorithms-and-Systems-by-Ajay-Kshemkalyani-and-Mukesh-Singhal.pdf">Distributed Computing: Principles, Algorithms, and Systems by Ajay Kshemkalyani and Mukesh Singhal</a>
