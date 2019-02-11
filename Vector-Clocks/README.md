@@ -1,6 +1,6 @@
 ### Overview
 
-This is a C++ implementation of <a href="./Logical-Time(Ajay-Kshemkalyani-and-Mukesh-Singhal).pdff">Distributed Computing Vector Clocks</a> along with Singhal-Kshemkalyani-Optimization.
+This is a C++ implementation of <a href="../Reading-Material/Slides-Logical-Time.pdf">Distributed Computing Vector Clocks</a> along with Singhal-Kshemkalyani-Optimization.
 
 ### How to Compile
 

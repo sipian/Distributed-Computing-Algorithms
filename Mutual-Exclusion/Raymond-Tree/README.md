@@ -1,6 +1,6 @@
 ### Overview
 
-This is a C++ implementation of <a href="../Distributed-Mutual-Exclusion-Algorithms(Ajay-Kshemkalyani-and-Mukesh-Singhal).pdf">Raymond’s Tree-Based Distributed Mutual Exclusion Algorithm</a>.
+This is a C++ implementation of <a href="../Reading-Material/Slides-Global-State-and-Snapshot-Recording-Algorithms.pdf">Raymond’s Tree-Based Distributed Mutual Exclusion Algorithm</a>.
 
 
 ## How to Compile
