@@ -1,3 +1,7 @@
+### Overview
+
+This is a C++ implementation of <a href="../Distributed-Mutual-Exclusion-Algorithms(Ajay-Kshemkalyani-and-Mukesh-Singhal).pdf">Suzuki-Kasami’s Broadcast  Distributed Mutual Exclusion Algorithm</a>.
+
 ## How to Compile
 
 ```
